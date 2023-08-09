@@ -45,6 +45,12 @@ public class Manga {
         if(mangaUpdated.description() != null) {
             description = mangaUpdated.description();
         }
+        if(mangaUpdated.category() != null) {
+            category = mangaUpdated.category();
+        }
+        if(mangaUpdated.read() != null) {
+            read = mangaUpdated.read();
+        }
     }
 }
 

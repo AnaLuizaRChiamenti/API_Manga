@@ -9,6 +9,7 @@ public record UserDetail(
         String email,
         String password,
         List<Manga> mangas
+
 ) {
     public UserDetail(User U) {
         this(

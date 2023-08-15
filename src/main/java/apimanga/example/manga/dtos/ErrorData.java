@@ -1,4 +1,4 @@
 package apimanga.example.manga.dtos;
 
-public record ErrorData(String message) {
+public record ErrorData(String field, String message) {
 }

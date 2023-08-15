@@ -8,12 +8,17 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/users")
 public class UserController {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -27,7 +32,7 @@ public class UserController {
     @Transactional
     public ResponseEntity createUser(@RequestBody CreateUser data){
         if (userRepository.existsByEmail(data.email())){
-            return ResponseEntity.badRequest().body(new ErrorData("Email já cadastrado"));
+            return ResponseEntity.badRequest().body(new ErrorData("Error", "Email já cadastrado"));
 
         }
 
@@ -38,7 +43,7 @@ public class UserController {
 
         var user = new User(
                 data.email(),
-                data.password()
+                passwordEncoder.encode(data.password())
         );
 
         userRepository.save(user);
@@ -47,17 +52,17 @@ public class UserController {
     }
 
 
-    @GetMapping("/login/{email}/{password}")
+    @PostMapping("/login/{email}/{password}")
     public ResponseEntity login(@PathVariable @Valid String email, @PathVariable @Valid String password){
         try {
             var user = userRepository.getReferenceByEmail(email);
             if(user.getEmail().equals(email) && user.getPassword().equals(password)){
                 return ResponseEntity.ok().body(user);
             }
-            return ResponseEntity.badRequest().body(new ErrorData("E-mail ou senha inválidos."));
+            return ResponseEntity.badRequest().body(new ErrorData("Error", "E-mail ou senha inválidos."));
 
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ErrorData("Login inválido."));
+            return ResponseEntity.badRequest().body(new ErrorData("Error", "Login inválido."));
         }
     }
 }

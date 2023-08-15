@@ -33,7 +33,7 @@ public class MangaController {
         var userEmail = userRepository.findById(newManga.emailUser());
 
         if(userEmail.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ErrorData("Usuário não localizado."));
+            return ResponseEntity.badRequest().body(new ErrorData("Error", "Usuário não localizado."));
         }
 
         var user = userEmail.get();
@@ -44,13 +44,13 @@ public class MangaController {
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity getMangas(@PathVariable String email, @RequestParam(required = false) String title, @RequestParam(required = false) boolean archived, @RequestParam(required = false) Category category){
+    public ResponseEntity getMangas(@PathVariable String email, @RequestParam(required = false) String title, @RequestParam(required = false) Category category){
         var checkUser = userRepository.getReferenceById(email);
 
         var mangas = checkUser.getMangas();
 
         if(mangas == null) {
-            return ResponseEntity.badRequest().body(new ErrorData("Nenhum manga adicionado."));
+            return ResponseEntity.badRequest().body(new ErrorData("Error", "Nenhum manga adicionado."));
         }
 
         if(title != null) {
@@ -74,7 +74,7 @@ public class MangaController {
         var manga = userMangaRepository.findById(idManga);
 
         if(manga == null){
-            return ResponseEntity.badRequest().body(new ErrorData("Manga não encontrado!"));
+            return ResponseEntity.badRequest().body(new ErrorData("Error", "Manga não encontrado!"));
         }
 
         userMangaRepository.delete(manga.get());

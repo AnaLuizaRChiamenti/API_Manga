@@ -36,10 +36,6 @@ public class UserController {
 
         }
 
-//        if (!DataBase.passwordUser(data.password(), data.repassword())){
-//            return ResponseEntity.badRequest().body(new ErrorData("As senhas devem ser iguais."));
-//        }
-
 
         var user = new User(
                 data.email(),

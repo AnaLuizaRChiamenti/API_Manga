@@ -85,7 +85,6 @@ public class MangaController {
     @PutMapping ("/{email}/{idManga}")
     public ResponseEntity updateManga(@PathVariable String email, @PathVariable UUID idManga, @RequestBody UpdateManga mangaUpdated ) {
         var user = userRepository.getReferenceByEmail(email);
-//        var user = optionalUser.get();
 
         var mangaOptional = user.getMangas().stream().filter(m -> m.getId().equals(idManga)).findAny();
 
@@ -95,13 +94,6 @@ public class MangaController {
         userMangaRepository.save(manga);
 
 
-//       if(manga.isEmpty()){
-//           return ResponseEntity.badRequest().body(new ErrorData("Recado não encontrado!"));
-//   }
-
-//        if(){
-//            return ResponseEntity.badRequest().body(new ErrorData("Manga não encontrado!"));
-//        }
         return ResponseEntity.ok().body(user.getMangas());
     }
 }
